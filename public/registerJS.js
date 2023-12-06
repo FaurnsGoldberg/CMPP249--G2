@@ -66,7 +66,7 @@ function validateForm(myform){
     for(var elem of checkForms){ // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
         if (elem.value == ""){
             
-            errorMessage += "Please enter a " + elem.name + ".<br>";
+            errorMessage += "Please enter a " + elem.placeholder + ".<br>";
             elem.style.borderColor = "red";
         }
     }

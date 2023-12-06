@@ -1,17 +1,36 @@
 <%- include('partials/mainHeader') %>
-<link rel="stylesheet" href="vacationpackage.css">
-
-<h2><%= FirstName %> <%= LastName %></h2><br>
-<h3>Upcoming Travel Packages ()</h3>
-<div class="padding1" align="center">
-    <% for(var i=0; i < availablePackages.length; i++) { %>
-        <div class="tile">
-            <img src="bhutan.jpg" alt="hawaii">
-            <p align="center" style="margin-bottom:-15px;"><%= availablePackages[i].PkgName %></p></br>
-            <p style="font-size: 18px;"><%= availablePackages[i].PkgDesc %></br></br>Starts:<%= availablePackages[i].PkgStartDate.toString() %> Ends:<%= availablePackages[i].PkgEndDate.toString() %></br>
-            $<%= availablePackages[i].PkgBasePrice %></br>
-            5 nights + flight<button>Add to Cart</button></p>
-        </div> 
-    <% } %>
+<link rel="stylesheet" href="vp.css">
+<div class="pageContent">
+    <h1>Welcome, <%= FirstName %></h1><br><hr>
+    <h2>Upcoming Travel Packages (<%= availablePackages.length %>)</h2>
+    <div class="padding1" align="left">
+        <% availablePackages.forEach(package => { %>
+            <div class="tile">
+                <img src="<%= package[0].PkgImg %>" alt="hawaii">
+                <p>
+                    <%= package[0].PkgName %>
+                </p>
+                <p style="font-size: 18px;">
+                    <% const startDate = new Date(package[0].PkgStartDate);
+                        const endDate = new Date(package[0].PkgEndDate);
+                        const options = { month: 'short', day: '2-digit', year: 'numeric'};
+                        const formattedStartDate = startDate.toLocaleDateString('en-US', options);
+                        const formattedEndDate = endDate.toLocaleDateString('en-US', options);
+                        const sed = `${formattedStartDate} - ${formattedEndDate}`;
+                    %>
+                    <%= sed %>
+                    <br>
+                    <br>
+                    <%= package[0].PkgDesc %>
+                    <br>
+                    <br>
+                    $<%= package[0].PkgBasePrice %>
+                    <br>
+                    <%= package[0].PkgDur %>
+                </p>
+            </div>
+            <% }); %>
+    </div>
+    <br>
 </div>
 <%- include('partials/mainFooter') %>

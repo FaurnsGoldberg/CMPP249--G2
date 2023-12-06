@@ -1,25 +1,29 @@
-<!DOCTYPE html>
-<html>
+<%- include('partials/mainHeader') %>
+    <link rel="stylesheet" href="vp.css">
+    <script>
+        function validateOrder(packageId){
+            if('<%= username %>'){
+                return true;
+            } else{
+                logInScreen();
+                return false;
+            }
+        }
+    </script>
 
-<head>
-    <title>Vacation Packages</title>
-    <link rel="stylesheet" href="/vp.css">
-</head>
-
-<body>
     <h1 align="center">Vacation Packages</h1>
     <div class="img1" align="center">
-        <img src="media/11maldives.png">
-        <img src="media/11lasvegas.png">
-        <img src="media/11spain.png">
-        <img src="media/11japan.png">
-        <img src="media/11hawaii.png">
+        <img src="11maldives.png">
+        <img src="11lasvegas.png">
+        <img src="11spain.png">
+        <img src="11japan.png">
+        <img src="11hawaii.png">
     </div>
 
     <div class="tile-container">
         <% packages.forEach(package => { %>
         <div class="tile">
-            <img src="/media/<%= package.PkgImg %>" alt="hawaii">
+            <img src="<%= package.PkgImg %>" alt="hawaii">
             <p>
                 <%= package.PkgName %>
             </p>
@@ -40,9 +44,10 @@
                 $<%= package.PkgBasePrice %>
                 <br>
                 <%= package.PkgDur %>
-                <button onclick="addToCart('<%= package.PkgName %>', '<%= package.PkgImg %>', '<%= package.PkgBasePrice %>')">
-                    Add to Cart
-                </button>
+                <form method="post" action="/packages" onsubmit="return(validateOrder('<%= package.PackageId %>'))">
+                    <input type="submit" value="Purchase">
+                    <input type="hidden" value='<%= package.PackageId %>' name="packageId">
+                </form>
             </p>
         </div>
         <% }); %>
@@ -65,6 +70,4 @@
             console.log('Cart:', cart);
         }
 </script>
-</body>
-
-</html>
+<%- include('partials/mainFooter') %>

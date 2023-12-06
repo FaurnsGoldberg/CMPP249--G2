@@ -2,22 +2,78 @@
 <link rel="stylesheet" href="reset.css">
 <link rel="stylesheet" href="contactPage.css">
 <div class="shell">
-    <div class="image" style="background-image: url('caleb-smith-nneS_1Y9t_E-unsplash.jpg');"></div>
-
-        <h1 style="font-size: 80px; color: white;">Contact Us</h1>
-        <p style="color: white">(777)-888-9999</p>
-
-    <div class="image" style="background-image: url('michiel-annaert-yQbZp_ivf_Y-unsplash.jpg');"></div>
-        <h1 style="font-size: 60px; color: white;">Email</h1>
-        <p style="color: white;">contact@Email.com</p>
-
-    <div class="image" style="background-image: url('marek-piwnicki-2um8kcfmOLc-unsplash.jpg');"></div>
-    <div class="header">
-        <h1 style="font-size: 50px; color: white;">Bug Report</h1>
-        <input type="text" style="background-color: #f5f7fa; width: 30%; height: 50px; border-radius: 30px; border: none;">
-        <button class="submit">submit</button>
-            <p style="font-size: 30px; color: white;">Address</p><br />
-            <p style="color: white;">1234 Noway No.6 A1B2C3</p>
+    <div class="textbox">
+        <h1>Email Us</h1><br>
+        <form action="//submit.form" id="ContactUs100" method="post" onsubmit="return ValidateForm(this);">
+            <script type="text/javascript">
+            function ValidateForm(frm) {
+            if (frm.Name.value == "") { alert('Name is required.'); frm.Name.focus(); return false; }
+            if (frm.FromEmailAddress.value == "") { alert('Email address is required.'); frm.FromEmailAddress.focus(); return false; }
+            if (frm.FromEmailAddress.value.indexOf("@") < 1 || frm.FromEmailAddress.value.indexOf(".") < 1) { alert('Please enter a valid email address.'); frm.FromEmailAddress.focus(); return false; }
+            if (frm.Comments.value == "") { alert('Please enter comments or questions.'); frm.Comments.focus(); return false; }
+            return false; }
+            </script>
+            <table style="width:100%;max-width:550px;border:0;" cellpadding="8" cellspacing="0">
+            <tr> <td>
+            <label for="Name">Name*:</label>
+            </td> <td>
+            <input name="Name" type="text" maxlength="60" style="width:100%;max-width:250px;" />
+            </td> </tr> <tr> <td>
+            <label for="PhoneNumber">Phone number:</label>
+            </td> <td>
+            <input name="PhoneNumber" type="text" maxlength="43" style="width:100%;max-width:250px;" />
+            </td> </tr> <tr> <td>
+            <label for="FromEmailAddress">Email address*:</label>
+            </td> <td>
+            <input name="FromEmailAddress" type="text" maxlength="90" style="width:100%;max-width:250px;" />
+            </td> </tr> <tr> <td>
+            <label for="Comments">Tell us how we can help:</label>
+            </td> <td>
+            <textarea name="Comments" rows="7" cols="40" style="width:100%;max-width:350px;"></textarea>
+            </td> </tr> <tr> <td>
+            * - required fields
+            </td> <td>
+            <input name="skip_Submit" type="submit" value="Submit" />
+            </td> </tr>
+            </table>
+         </form>
+        <br><hr>
+        <h1>Agencies</h1>
+        <br>
+        <div class="agencybox">
+            Calgary Travel Experts<br>
+            1155 8th Ave SW, Calgary AB, T2P1N3<br>
+            403-271-9873<br>
+            CalgaryBranch@TravelExperts.com
+        </div>
+        <br>
+        <div class="agencybox">
+            Okotoks Travel Experts<br>
+            110 Main Street, Okotoks AB, T7R3JS<br>
+            403-563-2381<br>
+            OkotoksBranch@TravelExperts.com
+        </div>
+        <br><hr>
+        <h1>Senior Agents</h1>
+        <br>
+        <div class="agencybox">
+            Janet Delton<br>
+            403-210-7801<br>
+            Janet.Delton@TravelExperts.com
+        </div>
+        <br>
+        <div class="agencybox">
+            Jane Merrill<br>
+            403-210-7868<br>
+            Jane.Merrill@TravelExperts.com
+        </div>
     </div>
+    <marquee direction="up">
+        <img src="marek-piwnicki-2um8kcfmOLc-unsplash.jpg">
+        <img src="michiel-annaert-yQbZp_ivf_Y-unsplash.jpg">
+        <img src="caleb-smith-nneS_1Y9t_E-unsplash.jpg">
+        
+        
+    </marquee>
 </div>
 <%- include('partials/mainFooter') %>

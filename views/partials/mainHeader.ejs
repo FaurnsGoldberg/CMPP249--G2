@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    
+    <head>   
         <title>Travel Experts</title>
 
         <link rel="stylesheet" href="homePageStyle.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner&family=Ephesis&display=swap" rel="stylesheet" />      
+        <link href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner&family=Ephesis&display=swap" rel="stylesheet" />  
+        <script>
+            function logOut(){
+                document.getElementById('hiddenform').submit();
+            }
+            function logInScreen(){
+                document.getElementById("screenblur").style.visibility = 'visible';
+                document.getElementById("loginpopup").style.visibility = 'visible';
+            }
+            function closeLogIn(){
+                document.getElementById("screenblur").style.visibility = 'hidden';
+                document.getElementById("loginpopup").style.visibility = 'hidden';
+            }
+            function validateLogIn(myform){
+                const checkForms = [];
+                var errorMessage = "";
+                checkForms.push(document.getElementById("tusername"));
+                checkForms.push(document.getElementById("tpassword"));
+                for(var elem of checkForms){ // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
+                    if (elem.value == ""){
+                        errorMessage += "Please enter a " + elem.placeholder + ".<br>";
+                        elem.style.borderColor = "red";
+                    }
+                }
+                if (!errorMessage)
+                {
+                    return true;
+                }
+                else
+                {
+                    document.getElementById("loginValText").innerHTML = errorMessage
+                    return false;
+                }
+            }
+
+        </script>
+        <form id="hiddenform" action="/logout" method="POST" style="display: none;">
+        </form>
+  </form>
     </head>
     <header>
         
@@ -18,33 +57,51 @@
         <!--images-->
     </header>
     <body>
-    <nav>
-        <ul type="none" class="menu">
-            <%if (pageType == "homePage") { %>
-                <li class="menuItem"><a href="/" class="active">Home Page</a> </li>
-            <% } else { %>
-                <li class="menuItem"><a href="/" class="inactive">Home Page</a> </li>
-            <% } %>
-            <%if (pageType == "contactPage") { %>
-                <li class="menuItem"><a href="/contact" class="active">Contact Us</a> </li>
-            <% } else { %>
-                <li class="menuItem"><a href="/contact" class="inactive">Contact Us</a> </li>
-            <% } %>
-            <%if (pageType == "G2_Vacationpackage") { %>
-                <li class="menuItem"><a href="/packages" class="active">Vacation Packages</a> </li>
-            <% } else { %>
-                <li class="menuItem"><a href="/packages" class="inactive">Vacation Packages</a> </li>
-            <% } %>
-            <%if (username) { %>
-                <%if (pageType == "profilePage") { %>
-                    <li class="menuItem"><a href="/profile" class="active">Your Profile</a> </li>
+        <div class="screenblur" id="screenblur"></div>
+        <div class="popup" id="loginpopup">
+            <button class="closebutton" onclick="closeLogIn()">&#10006;</button>
+            <h1>Log In</h1>
+            <form method="post" action="/login" class="formClass" onSubmit="return (validateLogIn(this));">
+
+                <input type='text' id='tusername' name="tUsername" placeholder="Username"/>
+                <br><input type='password' id='tpassword' name="tPassword"  placeholder="Password"/>
+                <br><button type="submit">Log In</button>
+                <br><br><div id="loginValText"><br></div>
+                <br><p class="loginlink"><i>Dont have an account? <a href="/registration" onclick="closeLogIn()">Register Here</a></i></p>
+            </form>
+        </div>
+        
+        <nav>
+            <ul type="none" class="menu">
+                <%if (pageType == "homePage") { %>
+                    <li class="menuItem"><a href="/" class="active">Home Page</a> </li>
                 <% } else { %>
-                    <li class="menuItem"><a href="/profile" class="inactive">Your Profile</a> </li>
+                    <li class="menuItem"><a href="/" class="inactive">Home Page</a> </li>
                 <% } %>
-            <%} else if (pageType == "custregister") { %>
-                <li class="menuItem"><a href="/registration" class="active">Register</a> </li>
-            <% } else { %>
-                <li class="menuItem"><a href="/registration" class="inactive">Register</a> </li>
-            <% } %>
-        </ul>
-    </nav>
+                <%if (pageType == "contactPage") { %>
+                    <li class="menuItem"><a href="/contact" class="active">Contact Us</a> </li>
+                <% } else { %>
+                    <li class="menuItem"><a href="/contact" class="inactive">Contact Us</a> </li>
+                <% } %>
+                <%if (pageType == "G2_Vacationpackage") { %>
+                    <li class="menuItem"><a href="/packages" class="active">Vacation Packages</a> </li>
+                <% } else { %>
+                    <li class="menuItem"><a href="/packages" class="inactive">Vacation Packages</a> </li>
+                <% } %>
+                <%if (username) { %>
+                    <%if (pageType == "profilePage") { %>
+                        <li class="menuItem"><a href="/profile" class="active">Your Profile</a> </li>
+                        <li class="menuItem"><a href="#" onclick="logOut()" class="inactive">Log Out</a> </li>
+                    <% } else { %>
+                        <li class="menuItem"><a href="/profile" class="inactive">Your Profile</a> </li>
+                        <li class="menuItem"><a href="#" onclick="logOut()" class="inactive">Log Out</a> </li>
+                    <% } %>
+                <%} else if (pageType == "custregister") { %>
+                    <li class="menuItem"><a href="/registration" class="active">Register</a> </li>
+                    <li class="menuItem"><a href="#" onclick="logInScreen()" class="inactive">Log In</a> </li>
+                <% } else { %>
+                    <li class="menuItem"><a href="/registration" class="inactive">Register</a> </li>
+                    <li class="menuItem"><a href="#" onclick="logInScreen()" class="inactive">Log In</a> </li>
+                <% } %>        
+            </ul>
+        </nav>

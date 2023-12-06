@@ -1,0 +1,46 @@
+<%- include('partials/mainHeader') %>
+<link rel="stylesheet" href="vp.css">
+<script>
+    function validateOrder(packageId){
+            if('<%= username %>'){
+                document.getElementById('packageInput').value = packageId;
+                return true;
+            } else{
+                logInScreen();
+                return false;
+            }
+        }
+</script>
+<div class="pageContent">
+    <h1>You are purchasing the <%= package.PkgName %></h1><br><hr>
+    <div class="tile">
+        <img src="<%= package.PkgImg %>" alt="hawaii">
+        <p>
+            <%= package.PkgName %>
+        </p>
+        <p style="font-size: 18px;">
+            <% const startDate = new Date(package.PkgStartDate);
+                const endDate = new Date(package.PkgEndDate);
+                const options = { month: 'short', day: '2-digit', year: 'numeric'};
+                const formattedStartDate = startDate.toLocaleDateString('en-US', options);
+                const formattedEndDate = endDate.toLocaleDateString('en-US', options);
+                const sed = `${formattedStartDate} - ${formattedEndDate}`;
+            %>
+            <%= sed %>
+            <br>
+            <br>
+            <%= package.PkgDesc %>
+            <br>
+            <br>
+            $<%= package.PkgBasePrice %>
+            <br>
+            <%= package.PkgDur %>
+            <form method="post" action="/orderPage" onsubmit="return(validateOrder('<%= package.PackageId %>'))">
+                <input type="submit" value="Confirm Purchase">
+                <input type="hidden" id="packageInput" name="packageId">
+            </form>
+        </p>
+    </div>
+    <br>
+</div>
+<%- include('partials/mainFooter') %>
