@@ -87,12 +87,6 @@ function validateForm(myform){
         errorMessage += "Please enter a valid 10 digit phone number.<br>";
         phoneField.style.borderColor = "red";
     }
-    exp = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/)
-    var passwordField = document.getElementById("password");
-    if(!exp.test(passwordField.value)){
-        errorMessage += "Your password is incorrectly formatted. Enter a different password.<br>";
-        passwordField.style.borderColor = "red";
-    }
     
     if (!errorMessage)
     {
