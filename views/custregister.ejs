@@ -1,51 +1,52 @@
 <%- include('partials/mainHeader') %>
 <script src="registerJS.js"></script>
-<div class="screenblur" id="screenblur"></div>
-<br><br>
-<div class ="loginButtons">
-    <ul type="none" class="menu">
-        <li class="menuItem"><a href="#" onclick="registerScreen()"class="inActive">Register</a> </li>
-        <li class="menuItem"><a href="#" onclick="loginScreen()" class="inActive">Login</a> </li>
-    </ul>  
+<div class="pageContentCenter">
+    <br><br>
+    <div class ="loginButtons">
+        <a class="signupbutton" href="#" onclick="registerScreen()"class="inActive">Register</a> </li>
+    </div>
+    <h1>And start planning your next trip.</h1><br>
+    <div class="popup" id="registerpopup">
+        <button class="closebutton" onclick="closeRegister()">&#10006;</button>
+        <h1>Register</h1>
+        <form method="post" action="/registration" class="formClass" onSubmit="return validateForm(this);">
+            <input type="text" id="firstname" name="FirstName" placeholder="First Name"/>
+            <input type="text" id="lastname" name="LastName" placeholder="Last Name"/><br>
+            <input type="text" id="city" name="City" placeholder="City"/>
+            <select id="prov" name="Province">
+                <option value="AB">Alberta</option>
+                <option value="SK">Saskatchewan</option>
+                <option value="YK">Yukon</option>
+            </select>   
+            <br><input type="text" id="streetaddress" name="StreetAddress" placeholder="Street Address"/>
+            <input type="text" id="pcode" name="PostalCode" size=10 placeholder="Postal Code" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
+            <br><input type="email" id="custemail" name="Email" placeholder="Email">
+            <input type="tel" id="custtel" name="PhoneNumber" placeholder="Phone Number" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
+            <br><input type="tel" id="buistel" name="BusinessPhone" placeholder="*Optional Business Phone"  onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
+            <br><br><input type='text' id='username' name="Username" placeholder="Username" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
+            <br><input type='password' id='password' name="Password"  placeholder="Password" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
+            <input type='password' id='confpassword' name="ConfirmationPassword"  placeholder="Retype Password" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
+            <br><br><button type="submit">Sign Up</button>
+            <button type="reset" onclick="return confirm('Did you really want to reset?')">Reset</button>
+            <br><p class="loginlink"><i>Already have an account? <a href="#" onclick="loginScreen()">Login Here</a></i></p>
+        </form>
+        <div class="requirementspopup" id="requirementspopup"></div>
+        <div class="validationpopup" id="validationpopup"><br><br></div>
+    </div>
+    <div class="img1" align="center">
+        <img src="11maldives.png">
+        <img src="11lasvegas.png">
+        <img src="11spain.png">
+        <img src="11japan.png">
+        <img src="11hawaii.png">
+    </div>
+    <br><hr><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    
+    <%if (usernameError) { %>
+        <script>
+            registerScreen()
+            drawValPopup("That username is already in use! Please select another.")
+        </script>
+    <% } %>   
 </div>
-<h1>Your Account..</h1>
-<div class="popup" id="registerpopup">
-    <button class="closebutton" onclick="closeRegister()">&#10006;</button>
-    <h1>Register</h1>
-    <form method="post" action="/registration" class="formClass" onSubmit="return validateForm(this);">
-        <input type="text" id="firstname" name="FirstName" placeholder="First Name"/>
-        <input type="text" id="lastname" name="LastName" placeholder="Last Name"/><br>
-        <input type="text" id="city" name="City" placeholder="City"/>
-        <select id="prov" name="Province">
-            <option value="AB">Alberta</option>
-            <option value="SK">Saskatchewan</option>
-            <option value="YK">Yukon</option>
-        </select>   
-        <br><input type="text" id="streetaddress" name="StreetAddress" placeholder="Street Address"/>
-        <input type="text" id="pcode" name="PostalCode" size=10 placeholder="Postal Code" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
-        <br><input type="email" id="custemail" name="Email" placeholder="Email">
-        <input type="tel" id="custtel" name="PhoneNumber" placeholder="Phone Number" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
-        <br><input type="tel" id="buistel" name="BusinessPhone" placeholder="*Optional Business Phone"  onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
-        <br><br><input type='text' id='username' name="Username" placeholder="Username" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
-        <br><input type='password' id='password' name="Password"  placeholder="Password" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
-        <input type='password' id='confpassword' name="ConfirmationPassword"  placeholder="Retype Password" onfocus="drawReqPopup(this)" onblur="hideReqPopup(this)"/>
-        <br><br><button type="submit">Sign Up</button>
-        <button type="reset" onclick="return confirm('Did you really want to reset?')">Reset</button>
-        <br><p class="loginlink"><i>Already have an account? <a href="#" onclick="loginScreen()">Login Here</a></i></p>
-    </form>
-    <div class="requirementspopup" id="requirementspopup"></div>
-    <div class="validationpopup" id="validationpopup">test<br><br></div>
-</div>
-<ul class="factsList">
-    <li class="fact"><p>Gives you detailed information about your travel bookings, including past trips.</p> </li>
-    <li class="fact"><p>Easily book your dream vacations and personalize it with related services.</p> </li>
-    <li class="fact"><p>Earn rewards and enjoy targeted offers to make your next trip as affordable as ever.</p></li>
-</ul>
-
-<%if (usernameError) { %>
-    <script>
-        registerScreen()
-        drawValPopup("That username is already in use! Please select another.")
-    </script>
-<% } %>   
 <%- include('partials/mainFooter') %>

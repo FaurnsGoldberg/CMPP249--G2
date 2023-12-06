@@ -5,26 +5,42 @@
     overflow-x: hidden;
     perspective: 3px;
     background: linear-gradient(to top, #fcc5e4 0%, #fda34b 15%, #ff7882 35%, #c8699e 52%, #7046aa 71%, #0c1db8 87%, #020f75 100%);
-
+    overflow:hidden;
+    font-family:Arial;
 }
 
 .shell div{
     position: relative;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
     letter-spacing: 2px;
+    
 }
 
+.textbox{
+    border: 10px solid #72A25D;
+    border-radius:5px;
+    background-color: white;
+    margin: auto;
+    width: fit-content;
+    padding: 10px;
+}
+
+.agencybox{
+    border-radius:5px;
+    border-color:black;
+    border: 3px solid black;
+    padding: 10px
+}
 .image {
     transform: translateZ(1px);  scale:(1.6);
     background-size: cover;
-    height: 100vh;
     z-index: -1;
 }
-
+.shell img{
+    z-index: -1;
+}
 .shell text {
-    height: 50vh;
     background-color: black;
 }
 
@@ -35,10 +51,15 @@
 .submit {
     background: linear-gradient(to right,#65CBF7,#B3A5FC);;
     color: #9C3493;
-    font-weight: bold;
     border: none;
     border-radius: 30px;
     height: 30px;
     width: 20%;
+}
+.shell marquee{
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    z-index: -1;
 }
 

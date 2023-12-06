@@ -36,9 +36,7 @@ app.get("/contact", (req,res) =>{
 });
 
 app.get("/packages", (req,res) =>{
-	res.cookie("username", "test")
 	var username = req.cookies.username;
-	console.log(req.cookies.username + "end")
 	var mysql = require('mysql');
 	var con = mysql.createConnection({
 		host: "localhost",
@@ -51,14 +49,13 @@ app.get("/packages", (req,res) =>{
 		var querytext = "SELECT * FROM packages;"
 		con.query(querytext, function (err, result, fields) {
 			if (err) throw err;			
-			res.render("G2_Vacationpackage", {
+			res.render("vp", {
 				username: username,
 				pageType: "G2_Vacationpackage",
-				availablePackages: result
+				packages: result
 			});
 		});
 	});
-	
 });
 
 app.get("/registration", (req,res) =>{ 
@@ -74,15 +71,104 @@ app.get("/profile", (req,res) =>{
 	var username = req.cookies.username;
 	var FirstName = req.cookies.FirstName;
 	var LastName = req.cookies.LastName;
-	res.render("profilePage", {
-		username: username,
-		pageType: "profilePage",
-		FirstName: FirstName,
-		LastName: LastName
-	})
+	if(username){
+		var finalpackages = []
+		var mysql = require('mysql');
+		var con = mysql.createConnection({
+		host: "localhost",
+		user: "traveldbadmin",
+		password: "tdba123",
+		database: "travelexperts"
+		});
+		con.connect(function(err) {
+			if (err) throw err;
+			var querytext = "SELECT PackageId FROM simplebookings WHERE CustomerId = '"+username+"'";
+			con.query(querytext, function (err, result, fields) {
+				if (err) throw err;
+				if(!result.length){
+					res.render("profilePage", {
+						username: username,
+						pageType: "profilePage",
+						FirstName: FirstName,
+						LastName: LastName,
+						availablePackages : finalpackages
+					})
+					res.end();
+					return;
+				}
+				for(var i=0; i < result.length; i++){
+					var i2 = 0
+					querytext = "SELECT * FROM packages WHERE PackageId = '"+result[i].PackageId+"'";
+					con.query(querytext, function (err2, result2, fields2) {
+						i2++
+						if (err2) throw err2;
+						finalpackages.push(result2)
+						if(i2==result.length){
+							res.render("profilePage", {
+								username: username,
+								pageType: "profilePage",
+								FirstName: FirstName,
+								LastName: LastName,
+								availablePackages : finalpackages
+							})
+							res.end();
+							return;
+						}
+					})
+					
+				}
+			});
+		})
+		
+	}else{
+		res.redirect("/registration");
+		res.end();
+	}
 });
 
+app.post("/logout", (req, res)=>{
+	res.clearCookie("username");
+	res.clearCookie("FirstName");
+	res.clearCookie("LastName");
+	res.redirect("/");
+	res.end();
+})
+
+app.post("/login", (req, res)=>{
+	var tryUsername = req.body.tUsername;
+	var tryPassword = req.body.tPassword;
+	var mysql = require('mysql');
+	var con = mysql.createConnection({
+	host: "localhost",
+	user: "traveldbadmin",
+	password: "tdba123",
+	database: "travelexperts"
+	});
+	con.connect(function(err) {
+		if (err) throw err;
+		var querytext = "SELECT CustFirstName, CustLastName FROM customers WHERE CustUsername = '"+tryUsername+"' AND CustPassword = '"+tryPassword+"'";
+		con.query(querytext, function (err, result, fields) {
+			if (err) throw err;
+			if(!result.length){
+				res.redirect(req.get('referer'));
+				res.end();
+				return false;
+			} else{
+				var queryResult = result[0];
+				res.cookie("username", tryUsername);
+				res.cookie("FirstName", queryResult.CustFirstName);
+				res.cookie("LastName", queryResult.CustLastName);
+				res.redirect("/profile");
+				res.end();
+				return true;
+			}
+		});
+	})
+	
+})
+
 app.post("/registration", (req, res)=>{
+	var username = req.cookies.username;
 	var tryUsername = req.body.Username;
 	var mysql = require('mysql');
 	var con = mysql.createConnection({
@@ -112,11 +198,16 @@ app.post("/registration", (req, res)=>{
 				res.cookie("username", req.body.Username)
 				res.cookie("FirstName", req.body.FirstName)
 				res.cookie("LastName", req.body.LastName)
+				res.redirect("/profile")
+				res.end()
 				return true
 			}else{
 				res.render("custregister", {
-					usernameError: true
+					usernameError: true,
+					pageType: "custregister",
+					username: username
 				})
+				res.end()
 				return false
 			}
 
@@ -126,6 +217,62 @@ app.post("/registration", (req, res)=>{
 })
 
 
+app.post("/packages", (req, res)=>{
+	var username = req.cookies.username;
+	var packageId = req.body.packageId;
+	var mysql = require('mysql');
+	var con = mysql.createConnection({
+		host: "localhost",
+		user: "traveldbadmin",
+		password: "tdba123",
+		database: "travelexperts"
+	});
+	con.connect(function(err) {
+		if (err) throw err;
+		var querytext = "SELECT * FROM packages WHERE PackageId = '"+packageId+"'";
+		con.query(querytext, function (err, result, fields) {
+			if (err) throw err;			
+			if(!result.length){
+				console.log("no package found"+packageId)
+				res.redirect(req.get('referer'));
+				res.end();
+				return false;
+			} else{
+				var queryResult = result[0];
+				res.render("orderPage", {
+					pageType: "orderPage",
+					username: username,
+					package: queryResult
+				})
+				res.end();
+				return true;
+			}
+		});
+	});
+})
+
+app.post("/orderPage", (req, res)=>{
+	var username = req.cookies.username;
+	var packageId = req.body.packageId;
+	var mysql = require('mysql');
+	var con = mysql.createConnection({
+		host: "localhost",
+		user: "traveldbadmin",
+		password: "tdba123",
+		database: "travelexperts"
+	});
+	con.connect(function(err) {
+		if (err) throw err;
+		var querytext = "INSERT INTO simplebookings (CustomerId, PackageId) VALUES ('";
+		querytext += username+"', '"+packageId+"')";
+		con.query(querytext, function (err, result, fields) {
+			if (err) throw err;
+			res.redirect("/profile");
+			res.end();
+			return true;
+		});
+	});	
+})
 
 /** 
 app.use((req,res, next) =>{
