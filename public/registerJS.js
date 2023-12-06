@@ -90,7 +90,7 @@ function validateForm(myform){
     
     if (!errorMessage)
     {
-        return confirm("Continue submitting?");
+        return true;
     }
     else
     {
