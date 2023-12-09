@@ -1,6 +1,6 @@
+<%# HTML written by Sergey Chitsvarin %>
 <!DOCTYPE html>
-<html>
-    
+<html> 
     <head>   
         <title>Travel Experts</title>
 
@@ -9,31 +9,31 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner&family=Ephesis&display=swap" rel="stylesheet" />  
         <script>
-            function logOut(){
+            function logOut(){ <%# Submits the Logout POST%>
                 document.getElementById('hiddenform').submit();
             }
-            function logInScreen(){
+            function logInScreen(){ <%# Make the login popup and screen blur visible %>
                 document.getElementById("screenblur").style.visibility = 'visible';
                 document.getElementById("loginpopup").style.visibility = 'visible';
             }
-            function closeLogIn(){
+            function closeLogIn(){ <%# Make the login popup and screen blur invisible %>
                 document.getElementById("screenblur").style.visibility = 'hidden';
                 document.getElementById("loginpopup").style.visibility = 'hidden';
             }
-            function validateLogIn(myform){
-                const checkForms = [];
-                var errorMessage = "";
-                checkForms.push(document.getElementById("tusername"));
+            function validateLogIn(myform){ <%# Check for input in the login form before submitting the post %>
+                const checkForms = []; <%# An array that will hold every form elem that needs to be validated %>
+                var errorMessage = ""; <%# A string that becomes the innerhtml of the loginValText div %>
+                checkForms.push(document.getElementById("tusername")); 
                 checkForms.push(document.getElementById("tpassword"));
-                for(var elem of checkForms){ // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
-                    if (elem.value == ""){
-                        errorMessage += "Please enter a " + elem.placeholder + ".<br>";
+                for(var elem of checkForms){ // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of <- where i learned the for..of syntax for js
+                    if (elem.value == ""){ <%# If the form input is empty %>
+                        errorMessage += "Please enter a " + elem.placeholder + ".<br>"; 
                         elem.style.borderColor = "red";
                     }
                 }
                 if (!errorMessage)
                 {
-                    return true;
+                    return true; <%# Check for input in the login form before submitting the post %>
                 }
                 else
                 {
@@ -43,13 +43,11 @@
             }
 
         </script>
-        <form id="hiddenform" action="/logout" method="POST" style="display: none;">
+        <form id="hiddenform" action="/logout" method="POST" style="display: none;"> <%# This form is hidden and requires no data, POSTs the logout command when submitted%> 
         </form>
-  </form>
     </head>
     <header>
-        
-        <div class="headText">
+        <div class="headText"> 
             <img src="Logo.png" alt="Logo for our company" />
             <h1>Welcome to Travel Experts</h1>
             <h1 class="vacation">Your Dream Vacation Starts Here </h1>
@@ -57,11 +55,11 @@
         <!--images-->
     </header>
     <body>
-        <div class="screenblur" id="screenblur"></div>
-        <div class="popup" id="loginpopup">
+        <div class="screenblur" id="screenblur"></div> <%# This div is used in multiple places and remains hidden unless a hidden div is being displayed %> 
+        <div class="popup" id="loginpopup"> <%# This div is hidden until the user attempts to login%> 
             <button class="closebutton" onclick="closeLogIn()">&#10006;</button>
             <h1>Log In</h1>
-            <form method="post" action="/login" class="formClass" onSubmit="return (validateLogIn(this));">
+            <form method="post" action="/login" class="formClass" onSubmit="return (validateLogIn(this));"> <%# This form triggers the LOGIN POST %> 
 
                 <input type='text' id='tusername' name="tUsername" placeholder="Username"/>
                 <br><input type='password' id='tpassword' name="tPassword"  placeholder="Password"/>
@@ -73,7 +71,7 @@
         
         <nav>
             <ul type="none" class="menu">
-                <%if (pageType == "homePage") { %>
+                <%if (pageType == "homePage") { %> <%# pageType is sent by index.js to properly highlight the selected nav option %> 
                     <li class="menuItem"><a href="/" class="active">Home Page</a> </li>
                 <% } else { %>
                     <li class="menuItem"><a href="/" class="inactive">Home Page</a> </li>
@@ -88,7 +86,7 @@
                 <% } else { %>
                     <li class="menuItem"><a href="/packages" class="inactive">Vacation Packages</a> </li>
                 <% } %>
-                <%if (username) { %>
+                <%if (username) { %> <%# If logged in, display the profile page instead of the registration button. %>
                     <%if (pageType == "profilePage") { %>
                         <li class="menuItem"><a href="/profile" class="active">Your Profile</a> </li>
                         <li class="menuItem"><a href="#" onclick="logOut()" class="inactive">Log Out</a> </li>
@@ -96,7 +94,7 @@
                         <li class="menuItem"><a href="/profile" class="inactive">Your Profile</a> </li>
                         <li class="menuItem"><a href="#" onclick="logOut()" class="inactive">Log Out</a> </li>
                     <% } %>
-                <%} else if (pageType == "custregister") { %>
+                <%} else if (pageType == "custregister") { %> <%# If not logged in, display the registration button instead of the profile button. %>
                     <li class="menuItem"><a href="/registration" class="active">Register</a> </li>
                     <li class="menuItem"><a href="#" onclick="logInScreen()" class="inactive">Log In</a> </li>
                 <% } else { %>
