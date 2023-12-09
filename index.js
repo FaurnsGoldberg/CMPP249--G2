@@ -1,9 +1,9 @@
 const express = require("express");
 const path = require("path");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')	// Required for cookie login system
 const fs = require("fs");
 
-const app = express();
+const app = express();	
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public"), {extensions: ["css","js"]}));
 app.use(express.static(path.join(__dirname, "media"), {extensions: ["gif","jpg", "png"]}));
@@ -18,16 +18,16 @@ app.listen(8000, (err) =>{
 	console.log("Server has started. Port 8000");
 });
 
-app.get("/", (req,res) =>{
-	var username = req.cookies.username;
+app.get("/", (req,res) =>{ // Home Page
+	var username = req.cookies.username; // Retrieve username from cookie
 	res.render("homePage", {
 		username: username,
-		pageType: "homePage"
+		pageType: "homePage"	// pageType helps the nav menu reflect the correct webpage
 	})
 //	res.sendFile("homePageStyle.css", { root: path.join(__dirname, "public") })
 });
 
-app.get("/contact", (req,res) =>{
+app.get("/contact", (req,res) =>{ // Contact Page
 	var username = req.cookies.username;
 	res.render("contactPage", {
 		username: username,
@@ -35,7 +35,7 @@ app.get("/contact", (req,res) =>{
 	})
 });
 
-app.get("/packages", (req,res) =>{
+app.get("/packages", (req,res) =>{ // Vacation Packages page
 	var username = req.cookies.username;
 	var mysql = require('mysql');
 	var con = mysql.createConnection({
@@ -58,11 +58,11 @@ app.get("/packages", (req,res) =>{
 	});
 });
 
-app.get("/registration", (req,res) =>{ 
+app.get("/registration", (req,res) =>{ // Customer Registration page
 	var username = req.cookies.username;
 	res.render("custregister", {
 		username: username,
-		usernameError: false,
+		usernameError: false, // If true, the page will display "username taken" error
 		pageType: "custregister"
 	})
 });
@@ -70,8 +70,7 @@ app.get("/registration", (req,res) =>{
 app.get("/profile", (req,res) =>{ 
 	var username = req.cookies.username;
 	var FirstName = req.cookies.FirstName;
-	var LastName = req.cookies.LastName;
-	if(username){
+	if(username){ // The profile page only loads if the user is logged in.
 		var finalpackages = []
 		var mysql = require('mysql');
 		var con = mysql.createConnection({
@@ -82,7 +81,7 @@ app.get("/profile", (req,res) =>{
 		});
 		con.connect(function(err) {
 			if (err) throw err;
-			var querytext = "SELECT PackageId FROM simplebookings WHERE CustomerId = '"+username+"'";
+			var querytext = "SELECT PackageId FROM simplebookings WHERE CustomerId = '"+username+"'"; // CustomerId == Username
 			con.query(querytext, function (err, result, fields) {
 				if (err) throw err;
 				if(!result.length){
@@ -90,7 +89,6 @@ app.get("/profile", (req,res) =>{
 						username: username,
 						pageType: "profilePage",
 						FirstName: FirstName,
-						LastName: LastName,
 						availablePackages : finalpackages
 					})
 					res.end();
@@ -108,7 +106,6 @@ app.get("/profile", (req,res) =>{
 								username: username,
 								pageType: "profilePage",
 								FirstName: FirstName,
-								LastName: LastName,
 								availablePackages : finalpackages
 							})
 							res.end();
@@ -120,13 +117,13 @@ app.get("/profile", (req,res) =>{
 			});
 		})
 		
-	}else{
+	}else{ // If the user is not logged in, redirect to registration page.
 		res.redirect("/registration");
 		res.end();
 	}
 });
 
-app.post("/logout", (req, res)=>{
+app.post("/logout", (req, res)=>{ // Logout POST, clears all cookies and redirect to homepage.
 	res.clearCookie("username");
 	res.clearCookie("FirstName");
 	res.clearCookie("LastName");
@@ -134,8 +131,8 @@ app.post("/logout", (req, res)=>{
 	res.end();
 })
 
-app.post("/login", (req, res)=>{
-	var tryUsername = req.body.tUsername;
+app.post("/login", (req, res)=>{ // Login POST
+	var tryUsername = req.body.tUsername; 
 	var tryPassword = req.body.tPassword;
 	var mysql = require('mysql');
 	var con = mysql.createConnection({
@@ -149,7 +146,7 @@ app.post("/login", (req, res)=>{
 		var querytext = "SELECT CustFirstName, CustLastName FROM customers WHERE CustUsername = '"+tryUsername+"' AND CustPassword = '"+tryPassword+"'";
 		con.query(querytext, function (err, result, fields) {
 			if (err) throw err;
-			if(!result.length){
+			if(!result.length){ // Wrong Username Password Combo, redirect back to the page.
 				res.redirect(req.get('referer'));
 				res.end();
 				return false;
@@ -167,7 +164,7 @@ app.post("/login", (req, res)=>{
 	
 })
 
-app.post("/registration", (req, res)=>{
+app.post("/registration", (req, res)=>{ // Registartion POST to signup new account.
 	var username = req.cookies.username;
 	var tryUsername = req.body.Username;
 	var mysql = require('mysql');
@@ -178,7 +175,7 @@ app.post("/registration", (req, res)=>{
 	database: "travelexperts"
 	});
 	var validUsername = false;
-	con.connect(function(err) {
+	con.connect(function(err) { // First, check for preexisting usernames.
 		if (err) throw err;
 		var querytext = "SELECT CustomerId FROM customers WHERE CustUsername = '"+tryUsername+"'";
 		con.query(querytext, function (err, result, fields) {
@@ -189,7 +186,7 @@ app.post("/registration", (req, res)=>{
 				validUsername = false;
 			}
 			
-			if(validUsername){
+			if(validUsername){ // No existing username found, add account to DB
 				querytext = "INSERT INTO customers (CustFirstName, CustLastName, CustAddress, CustCity, CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail, CustUsername, CustPassword) VALUES ('";
 				querytext += req.body.FirstName+"', '"+req.body.LastName+"', '"+req.body.StreetAddress+"', '"+req.body.City+"', '"+req.body.Province+"', '"+req.body.PostalCode+"', '"+"Canada"+"', '"+req.body.PhoneNumber+"', '"+req.body.BusinessPhone+"', '"+req.body.Email+"', '"+req.body.Username+"', '"+req.body.Password+"')";
 				con.query(querytext, function (err, result, fields) {
@@ -201,7 +198,7 @@ app.post("/registration", (req, res)=>{
 				res.redirect("/profile")
 				res.end()
 				return true
-			}else{
+			}else{ // Existing username found, rerender the registration page with the username error added.
 				res.render("custregister", {
 					usernameError: true,
 					pageType: "custregister",
@@ -217,7 +214,7 @@ app.post("/registration", (req, res)=>{
 })
 
 
-app.post("/packages", (req, res)=>{
+app.post("/packages", (req, res)=>{ // POST selecting a package from the Vacation Packages screen.
 	var username = req.cookies.username;
 	var packageId = req.body.packageId;
 	var mysql = require('mysql');
@@ -251,7 +248,7 @@ app.post("/packages", (req, res)=>{
 	});
 })
 
-app.post("/orderPage", (req, res)=>{
+app.post("/orderPage", (req, res)=>{ // Confirm order POST from order confirmation page
 	var username = req.cookies.username;
 	var packageId = req.body.packageId;
 	var mysql = require('mysql');
