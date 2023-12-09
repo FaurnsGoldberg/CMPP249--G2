@@ -1,4 +1,4 @@
-function validateLogin(loginForm){
+function validateLogin(loginForm){ // Unused?
     var mysql = require('mysql');
     var con = mysql.createConnection({
     host: "localhost",
@@ -24,7 +24,7 @@ function validateLogin(loginForm){
         
     }
 }
-function validateUsername(tryUsername){
+function validateUsername(tryUsername){ // Unused.
     return true;
     /** 
     var mysql = require('mysql');
@@ -49,7 +49,7 @@ function validateUsername(tryUsername){
     */
 
 }
-function validateForm(myform){
+function validateForm(myform){ // Validates all the fields of the regsitration form
     hideValPopup();
     const checkForms = [];
     var errorMessage = "";
@@ -69,9 +69,6 @@ function validateForm(myform){
             errorMessage += "Please enter a " + elem.placeholder + ".<br>";
             elem.style.borderColor = "red";
         }
-    }
-    if(!validateUsername(document.getElementById("username").value)){
-        errorMessage += "That username is already in use. Please select another.<br>";
     }
     var postalField = document.getElementById("pcode");
     var exp = new RegExp(/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i); // regex with canadian postal code validation
@@ -99,18 +96,18 @@ function validateForm(myform){
     }
 }
 
-function registerScreen(){
+function registerScreen(){ // Makes the Registration page and background blur visible
     document.getElementById("screenblur").style.visibility = 'visible';
     document.getElementById("registerpopup").style.visibility = 'visible';
 }
-function closeRegister(){
+function closeRegister(){    // Makes the Registration page, background blur, requirements popup and validation popup invisible
     document.getElementById("screenblur").style.visibility = 'hidden';
     document.getElementById("registerpopup").style.visibility = 'hidden';
     document.getElementById("requirementspopup").style.visibility = 'hidden';
     document.getElementById("validationpopup").style.visibility = 'hidden';
 }
-var ReqPopParent;
-function drawReqPopup(srcElem){
+var ReqPopParent; // holds the parent elem that most recently opened the Requirements Popup div. Used to make sure the Requirements Popup isn't 
+function drawReqPopup(srcElem){    // Makes the Requirements Div visible and fills it with info based on the passed elem
     ReqPopParent = srcElem
     document.getElementById("requirementspopup").style.visibility = 'visible';
     switch(srcElem.id){
@@ -136,16 +133,16 @@ function drawReqPopup(srcElem){
     }
 
 }
-function hideReqPopup(srcElem){
+function hideReqPopup(srcElem){ // Hides the req popup, but only if the passed Elem matches ReqPopParent
     if (srcElem == ReqPopParent){
         document.getElementById("requirementspopup").style.visibility = 'hidden';
     }
 }
-function drawValPopup(errStr){
+function drawValPopup(errStr){ // Make the Validation Popup visible, plus have it display the passed string.
     document.getElementById("validationpopup").style.visibility = 'visible';
     document.getElementById("validationpopup").innerHTML = errStr;
     }
 
-function hideValPopup(){
-    document.getElementById("validationpopup").style.visibility = 'hidden';
+function hideValPopup(){ // Hide validation popup.
+    document.getElementById("validationpopup").style.visibility = 'hidden';0
 }
