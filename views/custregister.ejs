@@ -1,15 +1,15 @@
 <%- include('partials/mainHeader') %>
-<script src="registerJS.js"></script>
-<div class="pageContentCenter">
+<script src="registerJS.js"></script> <%# Include all the functions in registerJS.js ; this is for readability. %>
+<div class="pageContentCenter"> 
     <br><br>
-    <div class ="loginButtons">
-        <a class="signupbutton" href="#" onclick="registerScreen()"class="inActive">Register</a> </li>
+    <div class ="loginButtons"> 
+        <a class="signupbutton" href="#" onclick="registerScreen()"class="inActive">Register</a> </li> <%# When clicked, draw the register screen. %>
     </div>
     <h1>And start planning your next trip.</h1><br>
-    <div class="popup" id="registerpopup">
-        <button class="closebutton" onclick="closeRegister()">&#10006;</button>
+    <div class="popup" id="registerpopup"> <%# This remains hidden until the user tries to register an account %>
+        <button class="closebutton" onclick="closeRegister()">&#10006;</button> <%# Hides the register popup. %>
         <h1>Register</h1>
-        <form method="post" action="/registration" class="formClass" onSubmit="return validateForm(this);">
+        <form method="post" action="/registration" class="formClass" onSubmit="return validateForm(this);"> <%# When submitted, this validates the from and then POSTs an attempt to register the account. %>
             <input type="text" id="firstname" name="FirstName" placeholder="First Name"/>
             <input type="text" id="lastname" name="LastName" placeholder="Last Name"/><br>
             <input type="text" id="city" name="City" placeholder="City"/>
@@ -42,7 +42,7 @@
     </div>
     <br><hr><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     
-    <%if (usernameError) { %>
+    <%if (usernameError) { %> <%# If this is a usernameError redirect, draw the register screen and have it show a special username in use error. %>
         <script>
             registerScreen()
             drawValPopup("That username is already in use! Please select another.")
