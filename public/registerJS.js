@@ -24,31 +24,7 @@ function validateLogin(loginForm){ // Unused?
         
     }
 }
-function validateUsername(tryUsername){ // Unused.
-    return true;
-    /** 
-    var mysql = require('mysql');
-    var con = mysql.createConnection({
-    host: "localhost",
-    user: "traveldbadmin",
-    password: "tdba123",
-    database: "travelexperts"
-    });
-    con.connect(function(err) {
-        if (err) throw err;
-        var querytext = "SELECT CustomerId FROM customers WHERE CustUsername = '"+tryUsername+"'";
-        con.query(querytext, function (err, result, fields) {
-            if (err) throw err;
-            if(!result.length){
-                return true;
-            } else{
-                return false;
-            }
-        });
-    });
-    */
 
-}
 function validateForm(myform){ // Validates all the fields of the regsitration form
     hideValPopup();
     const checkForms = [];
@@ -58,11 +34,7 @@ function validateForm(myform){ // Validates all the fields of the regsitration f
     checkForms.push(document.getElementById("lastname"));
     checkForms.push(document.getElementById("city"));
     checkForms.push(document.getElementById("streetaddress"));
-    checkForms.push(document.getElementById("custemail"));
-    checkForms.push(document.getElementById("custtel"));
-    checkForms.push(document.getElementById("username"));
-    checkForms.push(document.getElementById("password"));
-    checkForms.push(document.getElementById("confpassword"));
+    checkForms.push(document.getElementById("email"));
     for(var elem of checkForms){ // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
         if (elem.value == ""){
             
@@ -83,8 +55,25 @@ function validateForm(myform){ // Validates all the fields of the regsitration f
     if(!exp.test(phoneField.value)){
         errorMessage += "Please enter a valid 10 digit phone number.<br>";
         phoneField.style.borderColor = "red";
+    } 
+    exp = new RegExp(/[0-9a-zA-Z]{6,}/);
+    var userField = document.getElementById("username");
+    if(!exp.test(userField.value)){
+        errorMessage += "Your username must have 6 characters.<br>";
+        userField.style.borderColor = "red";
+    } 
+    exp = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
+    var passField = document.getElementById("password");
+    if(!exp.test(passField.value)){
+        errorMessage += "Your password is formatted incorrectly.<br>";
+        passField.style.borderColor = "red";
+    }  
+    var confpassField = document.getElementById("confpassword");
+    if(passField.value != confpassField.value){
+        errorMessage += "Your password doesn't match the confirmation.";
+        passField.style.borderColor = "red";
+        confpassField.style.borderColor = "red";
     }
-    
     if (!errorMessage)
     {
         return true;
