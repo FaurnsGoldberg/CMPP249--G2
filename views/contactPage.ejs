@@ -1,4 +1,5 @@
 <%- include('partials/mainHeader') %>
+<%# Primary File Author: Boheng Chen %>
 <link rel="stylesheet" href="reset.css">
 <link rel="stylesheet" href="contactPage.css">
 <div class="shell">
@@ -7,11 +8,12 @@
         <form action="//submit.form" id="ContactUs100" method="post" onsubmit="return ValidateForm(this);">
             <script type="text/javascript">
             function ValidateForm(frm) {
-            if (frm.Name.value == "") { alert('Name is required.'); frm.Name.focus(); return false; }
-            if (frm.FromEmailAddress.value == "") { alert('Email address is required.'); frm.FromEmailAddress.focus(); return false; }
-            if (frm.FromEmailAddress.value.indexOf("@") < 1 || frm.FromEmailAddress.value.indexOf(".") < 1) { alert('Please enter a valid email address.'); frm.FromEmailAddress.focus(); return false; }
-            if (frm.Comments.value == "") { alert('Please enter comments or questions.'); frm.Comments.focus(); return false; }
-            return false; }
+                if (frm.Name.value == "") { alert('Name is required.'); frm.Name.focus(); return false; }
+                if (frm.FromEmailAddress.value == "") { alert('Email address is required.'); frm.FromEmailAddress.focus(); return false; }
+                if (frm.FromEmailAddress.value.indexOf("@") < 1 || frm.FromEmailAddress.value.indexOf(".") < 1) { alert('Please enter a valid email address.'); frm.FromEmailAddress.focus(); return false; }
+                if (frm.Comments.value == "") { alert('Please enter comments or questions.'); frm.Comments.focus(); return false; }
+                return false; <%# Validation Disabled until the feature is implemented.%>
+        }
             </script>
             <table style="width:100%;max-width:550px;border:0;" cellpadding="8" cellspacing="0">
             <tr> <td>

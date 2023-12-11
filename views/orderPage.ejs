@@ -1,7 +1,8 @@
 <%- include('partials/mainHeader') %>
+<%# Primary File Author: Michael Chessall %>
 <link rel="stylesheet" href="vp.css">
 <script>
-    function validateOrder(packageId){
+    function validateOrder(packageId){ <%# Make sure a user is logged in before submitting an order. It also passes the packageID to the hidden form.%>
             if('<%= username %>'){
                 document.getElementById('packageInput').value = packageId;
                 return true;
@@ -18,8 +19,8 @@
         <p>
             <%= package.PkgName %>
         </p>
-        <p style="font-size: 18px;">
-            <% const startDate = new Date(package.PkgStartDate);
+        <p style="font-size: 18px;"> <%# This is copied from Gurleen's Vacation Packages page. %>
+            <% const startDate = new Date(package.PkgStartDate); 
                 const endDate = new Date(package.PkgEndDate);
                 const options = { month: 'short', day: '2-digit', year: 'numeric'};
                 const formattedStartDate = startDate.toLocaleDateString('en-US', options);
@@ -35,7 +36,7 @@
             $<%= package.PkgBasePrice %>
             <br>
             <%= package.PkgDur %>
-            <form method="post" action="/orderPage" onsubmit="return(validateOrder('<%= package.PackageId %>'))">
+            <form method="post" action="/orderPage" onsubmit="return(validateOrder('<%= package.PackageId %>'))"> 
                 <input type="submit" value="Confirm Purchase">
                 <input type="hidden" id="packageInput" name="packageId">
             </form>

@@ -1,4 +1,5 @@
 <%- include('partials/mainHeader') %>
+<%# Primary File Author: Michael Chessall %>
 <script src="registerJS.js"></script> <%# Include all the functions in registerJS.js ; this is for readability. %>
 <div class="pageContentCenter"> 
     <br><br>
@@ -33,14 +34,14 @@
         <div class="requirementspopup" id="requirementspopup"></div>
         <div class="validationpopup" id="validationpopup"><br><br></div>
     </div>
-    <div class="img1" align="center">
+    <div class="img1" align="center"> <%# These images were found by Gurleen for use in the Packages page, but later moved here for design reasons. %>
         <img src="11maldives.png">
         <img src="11lasvegas.png">
         <img src="11spain.png">
         <img src="11japan.png">
         <img src="11hawaii.png">
     </div>
-    <br><hr><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><hr><br>
     
     <%if (usernameError) { %> <%# If this is a usernameError redirect, draw the register screen and have it show a special username in use error. %>
         <script>

@@ -1,4 +1,5 @@
 <%- include('partials/mainHeader') %>
+<%# Primary File Author: Michael Chessall %>
 <link rel="stylesheet" href="vp.css">
 <div class="pageContent">
     <h1>Welcome, <%= FirstName %></h1><br><hr>
@@ -10,7 +11,7 @@
                 <p>
                     <%= package[0].PkgName %>
                 </p>
-                <p style="font-size: 18px;">
+                <p style="font-size: 18px;"> <%# This is copied from Gurleen's Vacation Packages page. %>
                     <% const startDate = new Date(package[0].PkgStartDate);
                         const endDate = new Date(package[0].PkgEndDate);
                         const options = { month: 'short', day: '2-digit', year: 'numeric'};

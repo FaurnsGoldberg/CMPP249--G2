@@ -1,0 +1,5 @@
+In order to run the program, you must import the .sql file included in the sql folder, 'TravelExpertsUpdated.sql'.
+You must delete or rename any existing databases with the name 'travelexperts' before the import will work.
+
+
+Then, create an sql user with the name 'traveldbadmin', password 'tdba123' with full permissions for the travelexperts DB.
